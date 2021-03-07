@@ -152,7 +152,7 @@ export function getValidOAS3(spec: Oas2 | Oas3): Promise<Oas3> {
     ) {
       preprocessingLog(`Received OpenAPI Specification - going to validate...`)
 
-      OASValidator.validate(spec, {})
+      OASValidator.validate(spec, { anchors: true })
         .then(() => resolve(spec as Oas3))
         .catch((error) =>
           reject(
@@ -774,7 +774,7 @@ export function getResponseSchemaAndNames<TSource, TContext, TArgs>(
      * Edge case: if response body content-type is not application/json, do not
      * parse.
      */
-    if (responseContentType !== 'application/json') {
+    if (!responseContentType.includes('application/json')) {
       let description =
         'Placeholder to access non-application/json response bodies'
 
